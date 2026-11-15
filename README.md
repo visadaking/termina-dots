@@ -1,38 +1,31 @@
-# termina dotfiles (KDE Plasma only)
+# termina dotfiles (kde only)
 
-Portable, shareable dotfiles/configs extracted from my **termina** setup, focused on recreating the KDE Plasma look/feel and daily workflow on other Linux distros (especially **Arch Linux**), without requiring NixOS.
+termina dotfiles
 
-This is a **dotfiles subset**, not a full NixOS/Home Manager system clone.
 
-## Included
 
-- **Terminal / shell / CLI**
+## in here
+
+- **terminal / shell / CLI**
   - `config/kitty/kitty.conf`
   - `config/ghostty/config`
   - `config/starship/starship.toml`
   - `config/fastfetch/config.jsonc` (sanitized)
   - `config/btop/btop.conf` + `config/btop/tokyo-night.theme`
-- **Desktop/app theming bits**
+- **desktop/app theming bits**
   - `config/gtk-3.0/settings.ini`, `config/gtk-4.0/settings.ini`
-  - `plasma/color-schemes/` (Tokyo Night / Tokyo Night Storm)
+  - `plasma/color-schemes/` (tokyo Night / tokyo Night Storm)
   - `wallpapers/`
-  - `assets/feishin/termina-plasma.json` (Feishin theme export)
-  - `assets/telegram/` (Telegram theme files)
-- **Apps/gaming**
+  - `assets/feishin/termina-plasma.json` (feishin)
+  - `assets/telegram/` (telegram theme files)
+- **apps/games**
   - `config/MangoHud/MangoHud.conf`
   - `config/vesktop/` (settings + quick CSS; optional, may overwrite existing settings)
 - **Installers**
   - `install.sh` for Arch/Fedora/Debian/etc. (safe, backs up existing files)
-  - `flake.nix` Home Manager module for Nix users
+  - `flake.nix` home manager module for Nix users
 
-## Not included (intentionally)
-
-- Secrets/tokens/credentials (SSH keys, browser logins/cookies/sessions, API tokens, etc.)
-- Full KDE Plasma state (panels, widgets, KWin rules, monitor layouts, activities) — these are device-specific
-- NixOS system config/modules from `termina`
-- Full icon/cursor theme packages as binaries (see “Match the full look on Arch” below)
-
-## Install on Arch / Fedora / Debian
+## install
 
 ```bash
 git clone <this-repo-url> termina-dots
@@ -54,16 +47,16 @@ The installer backs up existing targets as `*.bak.<timestamp>` before replacing 
 
 After installing these dotfiles, set/configure the matching themes in KDE Plasma settings:
 
-- **Color scheme:** Tokyo Night / Tokyo Night Storm (included in `plasma/color-schemes/`)
-- **Icons:** Papirus Dark (and apply teal folders for a closer match)
-  - Install `papirus-icon-theme` (and `papirus-folders` if available)
-  - Example: `papirus-folders -C teal --theme Papirus-Dark -o` and `papirus-folders -C teal --theme Papirus -o`
-- **Cursor:** Simp1e Tokyo Night Storm (package name may vary by repo/AUR)
-- **GTK theme:** Tokyo Night GTK theme (variant/package may vary)
-- **Wallpapers:** included in `wallpapers/` (installer can copy to `~/Pictures/Wallpapers`)
-- **Fonts:** install Nerd Fonts used by terminal/prompt configs (e.g. Maple Mono NF / JetBrainsMono Nerd Font / Symbols Nerd Font) for best results
+- **color scheme:** tokyo night / tokyo night storm (included in `plasma/color-schemes/`)
+- **icons:** papirus dark (and apply teal folders for a closer match)
+  - install `papirus-icon-theme` (and `papirus-folders` if available)
+  - example: `papirus-folders -C teal --theme Papirus-Dark -o` and `papirus-folders -C teal --theme Papirus -o`
+- **cursor:** simp1e tokyo night storm (package name may vary by repo/AUR)
+- **gtk theme:** tokyo night GTK theme (variant/package may vary)
+- **wallpapers:** included in `wallpapers/` (installer can copy to `~/Pictures/Wallpapers`)
+- **fonts:**  Maple Mono NF / JetBrainsMono Nerd Font / Symbols Nerd Font
 
-## Nix / Home Manager (flake)
+## nix / hm and flakes
 
 ```nix
 {
