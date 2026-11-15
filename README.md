@@ -28,12 +28,12 @@ termina dotfiles
 ## install
 
 ```bash
-git clone <this-repo-url> termina-dots
+git clone (https://github.com/visadaking/termina-dots.git) termina-dots
 cd termina-dots
 ./install.sh
 ```
 
-Options:
+options:
 ```bash
 ./install.sh --dry-run      # preview actions
 ./install.sh --no-packages  # skip package hints
