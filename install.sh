@@ -45,7 +45,6 @@ run() {
 
 say() { printf '%s\n' "$*"; }
 warn() { printf 'WARN: %s\n' "$*" >&2; }
-
 have() { command -v "$1" >/dev/null 2>&1; }
 
 detect_pm() {
@@ -70,18 +69,26 @@ backup_if_needed() {
 
 install_path() {
   local src="$1" dst="$2"
+  [ -e "$src" ] || { warn "missing source: $src"; return 0; }
   run mkdir -p -- "$(dirname -- "$dst")"
   backup_if_needed "$dst"
   if [ "$MODE" = "link" ]; then
     run ln -s -- "$src" "$dst"
   else
-    if [ -d "$src" ]; then
-      run cp -a -- "$src" "$dst"
-    else
-      run cp -a -- "$src" "$dst"
-    fi
+    run cp -a -- "$src" "$dst"
   fi
   say "  installed: $dst"
+}
+
+install_dir_contents() {
+  local src_dir="$1" dst_dir="$2"
+  [ -d "$src_dir" ] || { warn "missing source dir: $src_dir"; return 0; }
+  run mkdir -p -- "$dst_dir"
+  local f
+  for f in "$src_dir"/*; do
+    [ -e "$f" ] || continue
+    install_path "$f" "$dst_dir/$(basename -- "$f")"
+  done
 }
 
 confirm() {
@@ -93,46 +100,50 @@ confirm() {
 }
 
 PM="$(detect_pm)"
-say "== termina-dots installer =="
+say "== termina-dots installer (KDE Plasma only) =="
 say "source: $SCRIPT_DIR"
 say "mode:   $MODE"
 say "pm:     $PM"
 say
 
 if [ "$INSTALL_PACKAGES" -eq 1 ]; then
-  say "== Package hints =="
-  say "Install packages with your distro package manager (review before running):"
+  say "== Package hints (review before running) =="
   case "$PM" in
     pacman)
-      say "  sudo pacman -S --needed git kitty ghostty btop mangohud"
+      say "  # core apps"
+      say "  sudo pacman -S --needed git kitty ghostty btop fastfetch starship mangohud"
+      say "  # KDE/GTK/theme helpers (names may vary; check your repos/AUR)"
+      say "  sudo pacman -S --needed papirus-icon-theme papirus-folders kvantum"
+      say "  # GTK theme / cursor examples (may be in AUR): tokyonight-gtk-theme, simp1e-tokyo-night-cursors"
       ;;
     apt)
-      say "  sudo apt update && sudo apt install -y git kitty btop mangohud"
-      say "  (ghostty may require an external repo/package depending on your distro release)"
+      say "  sudo apt update"
+      say "  sudo apt install -y git kitty btop fastfetch mangohud"
+      say "  # starship/ghostty/papirus-folders/theme packages may require external repos or manual install"
       ;;
     dnf)
-      say "  sudo dnf install -y git kitty btop mangohud"
-      say "  (ghostty may require COPR/external package depending on Fedora version)"
+      say "  sudo dnf install -y git kitty btop fastfetch starship mangohud papirus-icon-theme"
+      say "  # ghostty/papirus-folders/theme packages may require COPR/external repos"
       ;;
     zypper)
-      say "  sudo zypper install -y git kitty btop mangohud"
+      say "  sudo zypper install -y git kitty btop fastfetch starship mangohud papirus-icon-theme"
       ;;
     *)
-      warn "Unknown package manager; install equivalents manually: git, kitty, ghostty, btop, mangohud"
+      warn "Unknown package manager; install equivalents manually."
       ;;
   esac
-  say "Vesktop is app-specific (Flatpak/AppImage/package varies by distro). Configs can still be installed."
+  say "Vesktop install varies by distro (package/Flatpak/AppImage)."
+  say "For matching icons: use Papirus + 'papirus-folders -C teal --theme Papirus-Dark' (and Papirus) if available."
   say
 fi
 
 say "== Components =="
-say "This will install shareable user configs (KDE Plasma-focused dotfiles subset)."
-say "Existing files are backed up as *.bak.<timestamp> before replacement."
+say "Shareable KDE Plasma-focused configs. Existing files are backed up as *.bak.<timestamp>."
 say
 
-if confirm "Install btop config?"; then
+if confirm "Install btop config + theme?"; then
+  install_path "$SCRIPT_DIR/config/btop/btop.conf" "$HOME/.config/btop/btop.conf"
   install_path "$SCRIPT_DIR/config/btop/tokyo-night.theme" "$HOME/.config/btop/themes/tokyo-night.theme"
-  # also provide default path users can select manually in btop if desired
 fi
 
 if confirm "Install Kitty config?"; then
@@ -143,21 +154,42 @@ if confirm "Install Ghostty config?"; then
   install_path "$SCRIPT_DIR/config/ghostty/config" "$HOME/.config/ghostty/config"
 fi
 
+if confirm "Install Starship config?"; then
+  install_path "$SCRIPT_DIR/config/starship/starship.toml" "$HOME/.config/starship.toml"
+fi
+
+if confirm "Install Fastfetch config (sanitized, no personal logo path)?"; then
+  install_path "$SCRIPT_DIR/config/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
+fi
+
 if confirm "Install MangoHud config?"; then
   install_path "$SCRIPT_DIR/config/MangoHud/MangoHud.conf" "$HOME/.config/MangoHud/MangoHud.conf"
+fi
+
+if confirm "Install GTK 3/4 settings?"; then
+  install_path "$SCRIPT_DIR/config/gtk-3.0/settings.ini" "$HOME/.config/gtk-3.0/settings.ini"
+  install_path "$SCRIPT_DIR/config/gtk-4.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
+fi
+
+if confirm "Install KDE Plasma color schemes (Tokyo Night / Storm)?"; then
+  install_dir_contents "$SCRIPT_DIR/plasma/color-schemes" "$HOME/.local/share/color-schemes"
+fi
+
+if confirm "Install wallpapers to ~/Pictures/Wallpapers?"; then
+  install_dir_contents "$SCRIPT_DIR/wallpapers" "$HOME/Pictures/Wallpapers"
 fi
 
 if confirm "Install Vesktop settings (may overwrite your Vesktop settings)?"; then
   run mkdir -p -- "$HOME/.config/vesktop/settings"
   install_path "$SCRIPT_DIR/config/vesktop/settings.json" "$HOME/.config/vesktop/settings.json"
   install_path "$SCRIPT_DIR/config/vesktop/settings/quickCss.css" "$HOME/.config/vesktop/settings/quickCss.css"
-  # some Vesktop setups read from settings/settings.json too; keep a copy for convenience
-  install_path "$SCRIPT_DIR/config/vesktop/settings/settings.json" "$HOME/.config/vesktop/settings/settings.json" 2>/dev/null || true
+  install_path "$SCRIPT_DIR/config/vesktop/settings/settings.json" "$HOME/.config/vesktop/settings/settings.json"
 fi
 
 say
-say "Done."
-say "Notes:"
-say "- Review backups (*.bak.*) if you want to restore previous configs."
-say "- KDE Plasma desktop-specific settings (panels/widgets/kwin rules) are highly machine-specific and not fully portable; this repo focuses on shareable app/theme dotfiles."
-say "- Secrets (browser logins, tokens, SSH keys, etc.) are intentionally not included."
+say "Optional extras (not auto-installed):"
+say "- Feishin theme: assets/feishin/termina-plasma.json"
+say "- Telegram theme files: assets/telegram/"
+say
+say "Done. Review backups (*.bak.*) to restore previous configs if needed."
+say "Note: Plasma panels/widgets/kwin layouts are device-specific and not included."

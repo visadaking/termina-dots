@@ -1,27 +1,38 @@
 # termina dotfiles (KDE Plasma only)
 
-Portable, shareable dotfiles/configs extracted from my **termina** setup, focused on a KDE Plasma desktop workflow.
+Portable, shareable dotfiles/configs extracted from my **termina** setup, focused on recreating the KDE Plasma look/feel and daily workflow on other Linux distros (especially **Arch Linux**), without requiring NixOS.
 
-This is **not** a full NixOS/Home Manager system reproduction (my main system is declarative NixOS + Home Manager). Instead, this repo/packages a practical subset of configs that can be used on other Linux distros (Arch, Fedora, Debian, etc.) and can also be consumed from Nix via a flake.
+This is a **dotfiles subset**, not a full NixOS/Home Manager system clone.
 
-## What’s included
+## Included
 
-- `config/btop/` — btop theme (`tokyo-night`)
-- `config/kitty/` — Kitty config
-- `config/ghostty/` — Ghostty config
-- `config/MangoHud/` — MangoHud config
-- `config/vesktop/` — Vesktop settings / quick CSS (shareable subset)
-- `install.sh` — safe installer for non-Nix systems (backs up existing files)
-- `flake.nix` — Nix flake for Home Manager integration (KDE Plasma-focused dotfiles module)
+- **Terminal / shell / CLI**
+  - `config/kitty/kitty.conf`
+  - `config/ghostty/config`
+  - `config/starship/starship.toml`
+  - `config/fastfetch/config.jsonc` (sanitized)
+  - `config/btop/btop.conf` + `config/btop/tokyo-night.theme`
+- **Desktop/app theming bits**
+  - `config/gtk-3.0/settings.ini`, `config/gtk-4.0/settings.ini`
+  - `plasma/color-schemes/` (Tokyo Night / Tokyo Night Storm)
+  - `wallpapers/`
+  - `assets/feishin/termina-plasma.json` (Feishin theme export)
+  - `assets/telegram/` (Telegram theme files)
+- **Apps/gaming**
+  - `config/MangoHud/MangoHud.conf`
+  - `config/vesktop/` (settings + quick CSS; optional, may overwrite existing settings)
+- **Installers**
+  - `install.sh` for Arch/Fedora/Debian/etc. (safe, backs up existing files)
+  - `flake.nix` Home Manager module for Nix users
 
-## What’s intentionally not included
+## Not included (intentionally)
 
 - Secrets/tokens/credentials (SSH keys, browser logins/cookies/sessions, API tokens, etc.)
-- Machine-specific hardware config
-- Full KDE Plasma state (panels/widgets/kwin rules/monitor layouts can be very device-specific)
-- NixOS system modules from `termina` (this is a dotfiles subset)
+- Full KDE Plasma state (panels, widgets, KWin rules, monitor layouts, activities) — these are device-specific
+- NixOS system config/modules from `termina`
+- Full icon/cursor theme packages as binaries (see “Match the full look on Arch” below)
 
-## Install on Arch / Fedora / Debian (and others)
+## Install on Arch / Fedora / Debian
 
 ```bash
 git clone <this-repo-url> termina-dots
@@ -30,7 +41,6 @@ cd termina-dots
 ```
 
 Options:
-
 ```bash
 ./install.sh --dry-run      # preview actions
 ./install.sh --no-packages  # skip package hints
@@ -38,15 +48,22 @@ Options:
 ./install.sh --all          # install all components without prompts
 ```
 
-The installer **backs up** existing targets as `*.bak.<timestamp>` before replacing them.
+The installer backs up existing targets as `*.bak.<timestamp>` before replacing them.
 
-### Package notes
-- Common packages: `kitty`, `ghostty` (availability varies by distro), `btop`, `mangohud`
-- **Vesktop** install method varies (package/Flatpak/AppImage); configs can still be applied to `~/.config/vesktop/`
+## Match the full look on Arch (KDE Plasma)
+
+After installing these dotfiles, set/configure the matching themes in KDE Plasma settings:
+
+- **Color scheme:** Tokyo Night / Tokyo Night Storm (included in `plasma/color-schemes/`)
+- **Icons:** Papirus Dark (and apply teal folders for a closer match)
+  - Install `papirus-icon-theme` (and `papirus-folders` if available)
+  - Example: `papirus-folders -C teal --theme Papirus-Dark -o` and `papirus-folders -C teal --theme Papirus -o`
+- **Cursor:** Simp1e Tokyo Night Storm (package name may vary by repo/AUR)
+- **GTK theme:** Tokyo Night GTK theme (variant/package may vary)
+- **Wallpapers:** included in `wallpapers/` (installer can copy to `~/Pictures/Wallpapers`)
+- **Fonts:** install Nerd Fonts used by terminal/prompt configs (e.g. Maple Mono NF / JetBrainsMono Nerd Font / Symbols Nerd Font) for best results
 
 ## Nix / Home Manager (flake)
-
-This repo includes a flake exposing a Home Manager module with KDE Plasma-focused dotfiles options. Example usage in your flake:
 
 ```nix
 {
@@ -68,8 +85,13 @@ This repo includes a flake exposing a Home Manager module with KDE Plasma-focuse
             kitty.enable = true;
             ghostty.enable = true;
             btop.enable = true;
+            starship.enable = true;
+            fastfetch.enable = true;
             mangohud.enable = true;
-            vesktop.enable = true;
+            gtk.enable = true;
+            plasmaColorSchemes.enable = true;
+            wallpapers.enable = false;
+            vesktop.enable = false;
           };
         }
       ];
@@ -78,8 +100,7 @@ This repo includes a flake exposing a Home Manager module with KDE Plasma-focuse
 }
 ```
 
-> Adjust username/home directory/options to your setup. The module installs shareable config files; it does not attempt to reproduce a full KDE Plasma desktop state.
+## Notes
 
-## Scope
-
-KDE Plasma-focused, portable dotfiles subset — meant to be easy to adopt without breaking an existing setup.
+- Fastfetch config is sanitized (no hardcoded user/host or local logo path).
+- For the closest KDE Plasma experience on Arch, combine these configs with the matching icon/cursor/GTK themes and Nerd Fonts listed above.
