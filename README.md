@@ -1,8 +1,6 @@
-# termina dotfiles (kde only)
+# termina dotfiles 
 
-termina dotfiles
-
-
+my dotfiles for kde plasma, otherwise idk what else to say go read. 
 
 ## in here
 
@@ -14,7 +12,7 @@ termina dotfiles
   - `config/btop/btop.conf` + `config/btop/tokyo-night.theme`
 - **desktop/app theming bits**
   - `config/gtk-3.0/settings.ini`, `config/gtk-4.0/settings.ini`
-  - `plasma/color-schemes/` (tokyo Night / tokyo Night Storm)
+  - `plasma/color-schemes/` (tokyo night / tokyo night storm)
   - `wallpapers/`
   - `assets/feishin/termina-plasma.json` (feishin)
   - `assets/telegram/` (telegram theme files)
