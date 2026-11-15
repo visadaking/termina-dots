@@ -41,11 +41,8 @@ Options:
 ./install.sh --all          # install all components without prompts
 ```
 
-The installer backs up existing targets as `*.bak.<timestamp>` before replacing them.
-
-## Match the full look on Arch (KDE Plasma)
-
-After installing these dotfiles, set/configure the matching themes in KDE Plasma settings:
+the installer backs up existing targets as `*.bak.<timestamp>` before replacing them.
+after installing these dotfiles, set/configure the matching themes in KDE Plasma settings:
 
 - **color scheme:** tokyo night / tokyo night storm (included in `plasma/color-schemes/`)
 - **icons:** papirus dark (and apply teal folders for a closer match)
