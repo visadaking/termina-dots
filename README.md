@@ -28,7 +28,7 @@ termina dotfiles
 ## install
 
 ```bash
-git clone (https://github.com/visadaking/termina-dots.git) termina-dots
+git clone https://github.com/visadaking/termina-dots.git termina-dots
 cd termina-dots
 ./install.sh
 ```
