@@ -89,8 +89,3 @@ after installing these dotfiles, set/configure the matching themes in KDE Plasma
   };
 }
 ```
-
-## Notes
-
-- Fastfetch config is sanitized (no hardcoded user/host or local logo path).
-- For the closest KDE Plasma experience on Arch, combine these configs with the matching icon/cursor/GTK themes and Nerd Fonts listed above.
