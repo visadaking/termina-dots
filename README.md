@@ -12,10 +12,11 @@ my dotfiles for kde plasma, otherwise idk what else to say go read.
   - `config/btop/btop.conf` + `config/btop/tokyo-night.theme`
 - **desktop/app theming bits**
   - `config/gtk-3.0/settings.ini`, `config/gtk-4.0/settings.ini`
-  - `plasma/color-schemes/` (tokyo night / tokyo night storm)
-  - `wallpapers/`
+  - `plasma/color-schemes/` (Tokyo Night / Tokyo Night Storm)
+  - `wallpapers/` (715139, ergo-proxy kw9yj7 + ne782l, lain suburban, overcast powerlines, fastfetch logo)
   - `assets/feishin/termina-plasma.json` (feishin)
   - `assets/telegram/` (telegram theme files)
+  - `assets/sable/termina-tokyo-night.sable.css` (Sable theme)
 - **apps/games**
   - `config/MangoHud/MangoHud.conf`
   - `config/vesktop/` (settings + quick CSS; optional, may overwrite existing settings)
@@ -80,6 +81,7 @@ after installing these dotfiles, set/configure the matching themes in KDE Plasma
             plasmaColorSchemes.enable = true;
             wallpapers.enable = false;
             vesktop.enable = false;
+            sable.enable = false;
           };
         }
       ];

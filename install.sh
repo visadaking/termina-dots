@@ -158,8 +158,9 @@ if confirm "Install Starship config?"; then
   install_path "$SCRIPT_DIR/config/starship/starship.toml" "$HOME/.config/starship.toml"
 fi
 
-if confirm "Install Fastfetch config (sanitized, no personal logo path)?"; then
+if confirm "Install Fastfetch config + logo?"; then
   install_path "$SCRIPT_DIR/config/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
+  install_path "$SCRIPT_DIR/wallpapers/fastfetch-logo.jpg" "$HOME/.config/fastfetch/fastfetch-logo.jpg"
 fi
 
 if confirm "Install MangoHud config?"; then
@@ -186,10 +187,15 @@ if confirm "Install Vesktop settings (may overwrite your Vesktop settings)?"; th
   install_path "$SCRIPT_DIR/config/vesktop/settings/settings.json" "$HOME/.config/vesktop/settings/settings.json"
 fi
 
+if confirm "Install Sable theme (termina-tokyo-night)?"; then
+  install_path "$SCRIPT_DIR/assets/sable/termina-tokyo-night.sable.css" "$HOME/.local/share/sable-themes/termina-tokyo-night.sable.css"
+fi
+
 say
 say "Optional extras (not auto-installed):"
 say "- Feishin theme: assets/feishin/termina-plasma.json"
 say "- Telegram theme files: assets/telegram/"
+say "- Sable theme: assets/sable/termina-tokyo-night.sable.css"
 say
 say "Done. Review backups (*.bak.*) to restore previous configs if needed."
 say "Note: Plasma panels/widgets/kwin layouts are device-specific and not included."
