@@ -20,6 +20,7 @@ my dotfiles for kde plasma, otherwise idk what else to say go read.
 - **apps/games**
   - `config/MangoHud/MangoHud.conf`
   - `config/vesktop/` (settings + quick CSS; optional, may overwrite existing settings)
+  - `config/applications/vesktop.desktop` (desktop entry/icon fix; optional)
 - **Installers**
   - `install.sh` for Arch/Fedora/Debian/etc. (safe, backs up existing files)
   - `flake.nix` home manager module for Nix users
@@ -81,6 +82,7 @@ after installing these dotfiles, set/configure the matching themes in KDE Plasma
             plasmaColorSchemes.enable = true;
             wallpapers.enable = false;
             vesktop.enable = false;
+            vesktop.desktopEntry.enable = false;
             sable.enable = false;
           };
         }

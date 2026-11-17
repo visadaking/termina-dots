@@ -187,6 +187,10 @@ if confirm "Install Vesktop settings (may overwrite your Vesktop settings)?"; th
   install_path "$SCRIPT_DIR/config/vesktop/settings/settings.json" "$HOME/.config/vesktop/settings/settings.json"
 fi
 
+if confirm "Install Vesktop desktop entry (Papirus icon fix)?"; then
+  install_path "$SCRIPT_DIR/config/applications/vesktop.desktop" "$HOME/.local/share/applications/vesktop.desktop"
+fi
+
 if confirm "Install Sable theme (termina-tokyo-night)?"; then
   install_path "$SCRIPT_DIR/assets/sable/termina-tokyo-night.sable.css" "$HOME/.local/share/sable-themes/termina-tokyo-night.sable.css"
 fi

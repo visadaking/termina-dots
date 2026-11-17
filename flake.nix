@@ -32,6 +32,7 @@
             plasmaColorSchemes.enable = lib.mkOption { type = lib.types.bool; default = true; description = "Install Plasma color schemes."; };
             wallpapers.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install wallpapers to ~/Pictures/Wallpapers."; };
             vesktop.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install Vesktop settings/quick CSS (may overwrite existing settings)."; };
+            vesktop.desktopEntry.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install Vesktop desktop entry with Papirus icon fix."; };
             sable.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install Sable theme (termina-tokyo-night)."; };
           };
 
@@ -81,6 +82,25 @@
                 "sable-themes/termina-tokyo-night.sable.css".source = src + "/assets/sable/termina-tokyo-night.sable.css";
               })
             ];
+
+            xdg.desktopEntries = lib.mkIf cfg.vesktop.desktopEntry.enable {
+              vesktop = {
+                name = "Vesktop";
+                genericName = "Internet Messenger";
+                comment = "Alternative Discord client with Vencord built-in";
+                exec = "vesktop %U";
+                icon = "${pkgs.papirus-icon-theme}/share/icons/Papirus/64x64/apps/vesktop.svg";
+                terminal = false;
+                type = "Application";
+                categories = [ "Network" "InstantMessaging" "Chat" ];
+                mimeType = [ "x-scheme-handler/discord" ];
+                settings = {
+                  Keywords = "discord;vencord;electron;chat";
+                  StartupWMClass = "Vesktop";
+                  Version = "1.5";
+                };
+              };
+            };
           };
         };
 

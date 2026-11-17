@@ -1,0 +1,13 @@
+[Desktop Entry]
+Categories=Network;InstantMessaging;Chat;
+Comment=Alternative Discord client with Vencord built-in
+Exec=vesktop %U
+GenericName=Internet Messenger
+Icon=vesktop
+Keywords=discord;vencord;electron;chat;
+MimeType=x-scheme-handler/discord;
+Name=Vesktop
+StartupWMClass=Vesktop
+Terminal=false
+Type=Application
+Version=1.5
