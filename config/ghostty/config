@@ -1,5 +1,5 @@
 # Copied from kitty.conf: background_opacity 0.92
-background-opacity = 0.92
+background-opacity = 0.88
 background = #131318
 background-blur = true
 # Pinned Plasma accent #5CB9AE, subtle use only
