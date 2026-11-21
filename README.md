@@ -14,11 +14,13 @@ my dotfiles for kde plasma, otherwise idk what else to say go read.
   - `config/gtk-3.0/settings.ini`, `config/gtk-4.0/settings.ini`
   - `plasma/color-schemes/` (Tokyo Night / Tokyo Night Storm)
   - `wallpapers/` (715139, ergo-proxy kw9yj7 + ne782l, lain suburban, overcast powerlines, fastfetch logo)
+  - `assets/live-wallpapers/default.mp4` (live wallpaper)
   - `assets/feishin/termina-plasma.json` (feishin)
   - `assets/telegram/` (telegram theme files)
   - `assets/sable/termina-tokyo-night.sable.css` (Sable theme)
 - **apps/games**
   - `config/MangoHud/MangoHud.conf`
+  - `config/qBittorrent/` (base config + search plugins; secrets kept local)
   - `config/vesktop/` (settings + quick CSS; optional, may overwrite existing settings)
   - `config/applications/vesktop.desktop` (desktop entry/icon fix; optional)
 - **Installers**
@@ -81,6 +83,8 @@ after installing these dotfiles, set/configure the matching themes in KDE Plasma
             gtk.enable = true;
             plasmaColorSchemes.enable = true;
             wallpapers.enable = false;
+            liveWallpapers.enable = false;
+            qbittorrent.enable = false;
             vesktop.enable = false;
             vesktop.desktopEntry.enable = false;
             sable.enable = false;

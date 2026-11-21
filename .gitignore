@@ -1,2 +1,10 @@
 result
 .direnv
+
+# secrets
+/secrets/
+*.secret
+*.key
+*.age
+.env
+.env.*

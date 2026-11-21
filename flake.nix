@@ -31,6 +31,8 @@
             gtk.enable = lib.mkOption { type = lib.types.bool; default = true; description = "Install GTK 3/4 settings."; };
             plasmaColorSchemes.enable = lib.mkOption { type = lib.types.bool; default = true; description = "Install Plasma color schemes."; };
             wallpapers.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install wallpapers to ~/Pictures/Wallpapers."; };
+            liveWallpapers.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install live wallpapers to ~/Videos/Live Wallpapers."; };
+            qbittorrent.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install qBittorrent base config and search plugins (writable, secrets merged from local file)."; };
             vesktop.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install Vesktop settings/quick CSS (may overwrite existing settings)."; };
             vesktop.desktopEntry.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install Vesktop desktop entry with Papirus icon fix."; };
             sable.enable = lib.mkOption { type = lib.types.bool; default = false; description = "Install Sable theme (termina-tokyo-night)."; };
@@ -78,10 +80,70 @@
                 "Pictures/Wallpapers/fastfetch-logo.jpg".source = src + "/wallpapers/fastfetch-logo.jpg";
               })
 
+              (lib.mkIf cfg.liveWallpapers.enable {
+                "Videos/Live Wallpapers/default.mp4".source = src + "/assets/live-wallpapers/default.mp4";
+              })
+
               (lib.mkIf cfg.sable.enable {
                 "sable-themes/termina-tokyo-night.sable.css".source = src + "/assets/sable/termina-tokyo-night.sable.css";
               })
             ];
+
+            home.activation.terminaDotsQbittorrent = lib.mkIf cfg.qbittorrent.enable (
+              lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                qb_dir="$HOME/.config/qBittorrent"
+                engines_dir="$qb_dir/nova3/engines"
+                conf="$qb_dir/qBittorrent.conf"
+                secrets="${config.home.homeDirectory}/Projects/termina-dots/secrets/qBittorrent.secrets.conf"
+                $DRY_RUN_CMD mkdir -p "$engines_dir"
+
+                if [ ! -e "$conf" ]; then
+                  $DRY_RUN_CMD install -m 600 ${src + "/config/qBittorrent/qBittorrent.conf"} "$conf"
+                fi
+
+                if [ -f "$secrets" ]; then
+                  ${pkgs.python3}/bin/python3 - "$conf" "$secrets" <<'PY'
+import re, sys
+from pathlib import Path
+conf_path = Path(sys.argv[1])
+secrets_path = Path(sys.argv[2])
+conf = conf_path.read_text()
+secrets = secrets_path.read_text().splitlines()
+section = None
+pending = []
+for raw in secrets:
+    line = raw.rstrip('\n')
+    if not line or line.lstrip().startswith('#') or line.lstrip().startswith(';'):
+        continue
+    m = re.match(r'^\[(.*)\]\s*$', line)
+    if m:
+        section = m.group(1)
+        continue
+    if '=' in line and section:
+        key = line.split('=', 1)[0].strip()
+        pending.append((section, key, line))
+for sec, key, full_line in pending:
+    sec_re = re.compile(r'(?ms)^\[' + re.escape(sec) + r'\]\n(.*?)(?=^\[|\Z)')
+    m = sec_re.search(conf)
+    key_re = re.compile(r'(?m)^' + re.escape(key) + r'=.*$')
+    if m:
+        block = m.group(0)
+        if key_re.search(block):
+            block = key_re.sub(full_line, block, count=1)
+        else:
+            block = block.rstrip('\n') + '\n' + full_line + '\n'
+        conf = conf[:m.start()] + block + conf[m.end():]
+    else:
+        conf = conf.rstrip() + f'\n\n[{sec}]\n{full_line}\n'
+conf_path.write_text(conf)
+PY
+                fi
+
+                $DRY_RUN_CMD chmod -R u+w "$engines_dir" 2>/dev/null || true
+                $DRY_RUN_CMD cp -r ${src + "/config/qBittorrent/nova3/engines"}/. "$engines_dir"/
+                $DRY_RUN_CMD chmod -R u+w "$engines_dir"
+              ''
+            );
 
             xdg.desktopEntries = lib.mkIf cfg.vesktop.desktopEntry.enable {
               vesktop = {

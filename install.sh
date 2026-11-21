@@ -167,6 +167,57 @@ if confirm "Install MangoHud config?"; then
   install_path "$SCRIPT_DIR/config/MangoHud/MangoHud.conf" "$HOME/.config/MangoHud/MangoHud.conf"
 fi
 
+if confirm "Install qBittorrent config + search plugins?"; then
+  qb_conf="$HOME/.config/qBittorrent/qBittorrent.conf"
+  qb_secrets="$SCRIPT_DIR/secrets/qBittorrent.secrets.conf"
+  if [ ! -e "$qb_conf" ]; then
+    install_path "$SCRIPT_DIR/config/qBittorrent/qBittorrent.conf" "$qb_conf"
+  else
+    say "  existing config kept: $qb_conf"
+  fi
+  if [ -f "$qb_secrets" ]; then
+    run python3 - "$qb_conf" "$qb_secrets" <<'PY'
+import re, sys
+from pathlib import Path
+conf_path = Path(sys.argv[1])
+secrets_path = Path(sys.argv[2])
+conf = conf_path.read_text()
+secrets = secrets_path.read_text().splitlines()
+section = None
+pending = []
+for raw in secrets:
+    line = raw.rstrip('\n')
+    if not line or line.lstrip().startswith('#') or line.lstrip().startswith(';'):
+        continue
+    m = re.match(r'^\[(.*)\]\s*$', line)
+    if m:
+        section = m.group(1)
+        continue
+    if '=' in line and section:
+        key = line.split('=', 1)[0].strip()
+        pending.append((section, key, line))
+for sec, key, full_line in pending:
+    sec_re = re.compile(r'(?ms)^\[' + re.escape(sec) + r'\]\n(.*?)(?=^\[|\Z)')
+    m = sec_re.search(conf)
+    key_re = re.compile(r'(?m)^' + re.escape(key) + r'=.*$')
+    if m:
+        block = m.group(0)
+        if key_re.search(block):
+            block = key_re.sub(full_line, block, count=1)
+        else:
+            block = block.rstrip('\n') + '\n' + full_line + '\n'
+        conf = conf[:m.start()] + block + conf[m.end():]
+    else:
+        conf = conf.rstrip() + f'\n\n[{sec}]\n{full_line}\n'
+conf_path.write_text(conf)
+PY
+    say "  merged local secrets: $qb_secrets"
+  else
+    say "  no local secrets file (optional): $qb_secrets"
+  fi
+  install_dir_contents "$SCRIPT_DIR/config/qBittorrent/nova3/engines" "$HOME/.config/qBittorrent/nova3/engines"
+fi
+
 if confirm "Install GTK 3/4 settings?"; then
   install_path "$SCRIPT_DIR/config/gtk-3.0/settings.ini" "$HOME/.config/gtk-3.0/settings.ini"
   install_path "$SCRIPT_DIR/config/gtk-4.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
@@ -178,6 +229,10 @@ fi
 
 if confirm "Install wallpapers to ~/Pictures/Wallpapers?"; then
   install_dir_contents "$SCRIPT_DIR/wallpapers" "$HOME/Pictures/Wallpapers"
+fi
+
+if confirm "Install live wallpapers to ~/Videos/Live Wallpapers?"; then
+  install_dir_contents "$SCRIPT_DIR/assets/live-wallpapers" "$HOME/Videos/Live Wallpapers"
 fi
 
 if confirm "Install Vesktop settings (may overwrite your Vesktop settings)?"; then
