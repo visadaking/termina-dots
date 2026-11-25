@@ -1,8 +1,21 @@
 [Desktops]
 Id_1=3d93a4d7-5018-4d9e-aa90-b8dc15376ef3
 Id_2=845532fd-e0dc-4c1d-b6d9-85ea1242e0d3
-Number=2
+Id_3=3190ad21-d4af-4735-9d06-173322e93253
+Id_4=12e9a474-d627-412e-aa34-944b8cb2d6fa
+Name_3=undefined
+Name_4=undefined
+Number=4
 Rows=1
+
+[EdgeBarrier]
+CornerBarrier=false
+
+[Effect-overview]
+BorderActivate=9
+
+[Input]
+TabletMode=off
 
 [Plugins]
 blurEnabled=true
@@ -18,6 +31,14 @@ enableZoneOverlay=true
 enableZoneSelector=true
 layoutsJson=[{"name":"Halves","padding":0,"zones":[{"height":100,"width":50,"x":0,"y":0},{"height":100,"width":50,"x":50,"y":0}]},{"name":"1/3-2/3","padding":0,"zones":[{"height":100,"width":33.33,"x":0,"y":0},{"height":100,"width":66.67,"x":33.33,"y":0}]},{"name":"Equal Thirds","padding":0,"zones":[{"height":100,"width":33.33,"x":0,"y":0},{"height":100,"width":33.33,"x":33.33,"y":0},{"height":100,"width":33.34,"x":66.66,"y":0}]}]
 rememberWindowGeometries=true
+
+[Tiling][12e9a474-d627-412e-aa34-944b8cb2d6fa][f9df4c0a-cd73-43c0-929a-e02adf919df0]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][3190ad21-d4af-4735-9d06-173322e93253][f9df4c0a-cd73-43c0-929a-e02adf919df0]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][3d93a4d7-5018-4d9e-aa90-b8dc15376ef3][e77a3f36-0a52-4fcb-a6e7-a79a26abef64]
 padding=4
@@ -37,6 +58,13 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 
 [Wayland]
 EnablePrimarySelection=false
+
+[Windows]
+BorderSnapZone=5
+ElectricBorderMaximize=false
+ElectricBorderTiling=false
+Placement=Smart
+WindowSnapZone=5
 
 [Xwayland]
 Scale=1
