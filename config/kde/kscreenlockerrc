@@ -1,0 +1,18 @@
+[Daemon]
+Autolock=false
+LockGrace=0
+LockOnResume=false
+Timeout=0
+
+[Greeter]
+WallpaperPlugin=luisbocanegra.smart.video.wallpaper.reborn
+
+[Greeter][LnF][General]
+hideClockWhenIdle=true
+showMediaControls=false
+
+[Greeter][Wallpaper][luisbocanegra.smart.video.wallpaper.reborn][General]
+DarkLightScheduleState=AAAAAQAAAAgAAAGiDOFaKAAAAAAAAAGiC62NSAAAAaILxa0QAAAAAQAAAaIN/QsoAAABog4VKvAAAAGiEgf8eAAAAAAAAAGiENSosAAAAaIQ7NgYAAAAAQAAAaITIyTAAAABohM7UEAAAAGiFy6isAAAAAAAAAGiFfvIAAAAAaIWE/84AAAAAQAAAaIYSUYoAAABohhhfWAAAAGiHFVM0AAAAAAAAAGiGyLjaAAAAaIbOyZYAAAAAQAAAaIdb29gAAABoh2HslAAAAGiIXv28AAAAAAAAAGiIEn+0AAAAaIgYkmQAAAAAQAAAaIilaBoAAABoiKt6ygAAAGiJqKk+AAAAAAAAAGiJXEaOAAAAaIliWzIAAAAAQAAAaInu9lAAAABoifUK9AAAAGiK8lTAAAAAAAAAAGiKpgxuAAAAaIqsJAAAAAAAQAAAaIs4hYAAAABoiz6dEgAAAGiMPAE8AAAAAAAAAGiL79JOAAAAaIv169QAAAAAQAAAaIyCF54AAABojIgxJA=
+LastVideo=file:///home/visa/trash/live wallpapers/default.mp4
+LastVideoPosition=2500
+VideoUrls=[{"filename":"file:///home/visa/trash/live wallpapers/default.mp4","enabled":true,"duration":0,"customDuration":0,"playbackRate":0,"alternativePlaybackRate":0,"loop":false,"dayNightPhase":4}]

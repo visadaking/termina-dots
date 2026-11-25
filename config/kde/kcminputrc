@@ -1,0 +1,11 @@
+[Libinput][13364][1328][Keychron Keychron C3 Pro 8K Mouse]
+PointerAcceleration=-0.200
+PointerAccelerationProfile=1
+
+[Libinput][4152][6220][SteelSeries SteelSeries Rival 3]
+PointerAcceleration=-0.200
+PointerAccelerationProfile=1
+
+[Mouse]
+cursorSize=24
+cursorTheme=Simp1e-Tokyo-Night-Storm

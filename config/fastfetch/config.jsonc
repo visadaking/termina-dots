@@ -1,7 +1,7 @@
 {
   "logo": {
     "type": "kitty",
-    "source": "~/.config/fastfetch/fastfetch-logo.jpg",
+    "source": "/home/visa/.config/fastfetch/fastfetch-logo.jpg",
     "width": 63,
     "padding": {
       "top": 1,
@@ -16,7 +16,14 @@
   },
   "modules": [
     "break",
-    "title",
+    {
+      "type": "title",
+      "format": "visa@termina",
+      "color": {
+        "user": "blue",
+        "host": "cyan"
+      }
+    },
     "break",
     {
       "type": "custom",
@@ -32,6 +39,12 @@
       "type": "kernel",
       "key": "├ 󰒋 Kernel",
       "keyColor": "blue"
+    },
+    {
+      "type": "initsystem",
+      "key": "├ 󰜉 Init",
+      "keyColor": "blue",
+      "format": "{name}"
     },
     {
       "type": "de",
@@ -84,7 +97,7 @@
     "break",
     {
       "type": "custom",
-      "format": "╭─ Uptime / Age"
+      "format": "╭─ Time"
     },
     {
       "type": "command",
@@ -94,13 +107,9 @@
     },
     {
       "type": "command",
-      "key": "└ 󰋚 OS Age",
+      "key": "└ 󰃭 Age",
       "keyColor": "blue",
-      "text": "birth=$(stat -c %W /etc/machine-id 2>/dev/null); [ \"${birth:-0}\" -le 0 ] 2>/dev/null && birth=$(stat -c %W / 2>/dev/null); [ \"${birth:-0}\" -le 0 ] 2>/dev/null && birth=$(date +%s); now=$(date +%s); age=$((now-birth)); [ \"$age\" -lt 0 ] && age=0; d=$((age/86400)); if [ \"$d\" -eq 1 ]; then echo \"1 day\"; else echo \"$d days\"; fi"
-    },
-    "break",
-    {
-      "type": "colors"
+      "text": "b=$(stat -c %W / 2>/dev/null); n=$(date +%s); if [ -n \"$b\" ] && [ \"$b\" -gt 0 ] 2>/dev/null; then d=$(((n-b)/86400)); if [ \"$d\" -eq 1 ]; then echo \"1 day\"; else echo \"$d days\"; fi; else echo \"unknown\"; fi"
     }
   ]
 }
